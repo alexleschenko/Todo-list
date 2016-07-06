@@ -4,7 +4,7 @@
         <td>Task</td>
         <td>Actions</td>
     </tr>
-    {% for i in my_form %}
+    {% for i in all_data %}
         <tr>
         <td>
             {{ i.done }}
@@ -20,4 +20,4 @@
 </table>
 
 <br>
-<a href="{% url 'add' %}">Add new task</a>
+<a href="{% url 'add' %}">New task!</a>
