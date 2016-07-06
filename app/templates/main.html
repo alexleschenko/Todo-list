@@ -13,7 +13,10 @@
             {{ i.task }}
         </td>
         <td>
-            &&&
+            <a href="{% url 'main' %}?action=upp">Move up</a>
+            <a href="{% url 'main' %}?action=down">Move down</a>
+            <a href="{% url 'update' %}">Update</a>
+            <a href="{% url 'main' %}?action=dell">Delete</a>
         </td>
         </tr>
     {% endfor %}
