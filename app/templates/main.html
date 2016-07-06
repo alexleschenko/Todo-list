@@ -1,0 +1,23 @@
+<table border="1">
+    <tr bgcolor="#808080">
+        <td>Status</td>
+        <td>Task</td>
+        <td>Actions</td>
+    </tr>
+    {% for i in my_form %}
+        <tr>
+        <td>
+            {{ i.done }}
+        </td>
+        <td>
+            {{ i.task }}
+        </td>
+        <td>
+            &&&
+        </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="{% url 'add' %}">Add new task</a>
