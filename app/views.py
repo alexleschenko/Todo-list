@@ -3,9 +3,16 @@ from models import *
 from forms import *
 # Create your views here.
 def main(request):
-    data = Todo.objects.filter()
-    context = {'all_data':data}
-    return render(request, 'main.html', context)
+    if request.GET.items():
+        action = request.GET.get('action')
+        id = request.GET.get('id')
+        if action == 'dell':
+            Todo.objects.filter(id=int(id)).delete()
+            return redirect('main')
+    else:
+        data = Todo.objects.filter()
+        context = {'all_data':data}
+        return render(request, 'main.html', context)
 
 def add(request):
     if request.method == 'POST':
@@ -19,3 +26,6 @@ def add(request):
     else:
         context = {'my_form':TaskForm()}
         return render(request, 'add.html', context)
+
+def update(request):
+    pass
