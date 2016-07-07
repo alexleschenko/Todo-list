@@ -10,7 +10,7 @@
             {% if i.done == True %}
             &#10003;
             {% else %}
-            <a href="{% url 'main' %}?action=done">&#10005;</a>
+            <a href="{% url 'main' %}?action=done&id={{ i.id }}">&#10005;</a>
             {% endif %}
         </td>
         <td>
@@ -19,7 +19,7 @@
         <td>
             <a href="{% url 'main' %}?action=upp&id={{ i.id }}">Move up</a>
             <a href="{% url 'main' %}?action=down&id={{ i.id }}">Move down</a>
-            <a href="{% url 'update' %}">Update</a>
+            <a href="{% url 'update' %}?id={{ i.id }}">Update</a>
             <a href="{% url 'main' %}?action=dell&id={{ i.id }}">Delete</a>
         </td>
         </tr>

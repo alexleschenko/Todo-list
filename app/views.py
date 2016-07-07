@@ -10,7 +10,7 @@ def main(request):
         if action == 'dell':
             Todo.objects.filter(id=id).delete()
             return redirect('main')
-        if action == 'upp':
+        elif action == 'upp':
             take_up = Todo.objects.filter(id=id).get()
             if take_up.place == 1:
                 return redirect('main')
@@ -37,6 +37,9 @@ def main(request):
                 Todo.objects.filter(id=take_up_id).update(id=take_down_id)
                 Todo.objects.create(id=take_up_id, task=take_down.task, done=take_down.done)
                 return redirect('main')
+        elif action == 'done':
+            Todo.objects.filter(id=id).update(done=True)
+            return redirect('main')
 
     else:
         data = Todo.objects.filter()
@@ -62,4 +65,20 @@ def add(request):
         return render(request, 'add.html', context)
 
 def update(request):
-    pass
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+
+        if request.session.has_key('data'):
+            id = request.session.get('data')
+        del request.session['data']
+        if form.is_valid():
+            data = form.cleaned_data
+            Todo.objects.filter(id=id).update(task=data['task'], done=data['done'])
+            return redirect(main)
+        context = {'my_form': form}
+        return render(request, 'update.html', context)
+    else:
+        id = request.GET.get('id')
+        request.session['data'] = id
+        context = {'my_form': TaskForm()}
+        return render(request, 'update.html', context)
