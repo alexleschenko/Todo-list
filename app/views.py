@@ -10,30 +10,40 @@ def main(request):
         if action == 'dell':
             Todo.objects.filter(id=id).delete()
             return redirect('main')
-        elif action == 'upp':
-            if id == 1:
+        if action == 'upp':
+            take_up = Todo.objects.filter(id=id).get()
+            if take_up.place == 1:
                 return redirect('main')
             else:
-                taskup = Todo.objects.filter(id=id).get()
-                taskdown = Todo.objects.filter(id=int(id) - 1).get()
-                Todo.objects.filter(id=taskup.id).update(task=taskdown.task, done=taskdown.done)
-                Todo.objects.filter(id=taskdown.id).update(task=taskup.task, done=taskup.done)
+                place = int(take_up.place)-1
+                take_down = Todo.objects.filter(place=place).get()
+                take_up_id = take_up.id
+                take_down_id = take_down.id
+                Todo.objects.filter(id=take_down_id).delete()
+                Todo.objects.filter(id=take_up_id).update(id=take_down_id)
+                Todo.objects.create(id=take_up_id, task=take_down.task, done=take_down.done)
                 return redirect('main')
         elif action == 'down':
-            data = Todo.objects.filter().values('id')
-            max_id = 0
-            for i in data:
-                if i > max_id:
-                    max_id = i['id']
-            if int(id) == max_id:
+            take_up = Todo.objects.filter(id=id).get()
+            count_db = Todo.objects.filter().count()
+            if take_up.place == count_db:
                 return redirect('main')
             else:
-                taskdown = Todo.objects.filter(id=id).get()
-                taskup = Todo.objects.filter(id=int(id) + 1).get()
-                Todo.objects.filter(id=taskup.id).update(task=taskdown.task, done=taskdown.done)
-                Todo.objects.filter(id=taskdown.id).update(task=taskup.task, done=taskup.done)
+                place = int(take_up.place) + 1
+                take_down = Todo.objects.filter(place=place).get()
+                take_up_id = take_up.id
+                take_down_id = take_down.id
+                Todo.objects.filter(id=take_down_id).delete()
+                Todo.objects.filter(id=take_up_id).update(id=take_down_id)
+                Todo.objects.create(id=take_up_id, task=take_down.task, done=take_down.done)
                 return redirect('main')
+
     else:
+        data = Todo.objects.filter()
+        place = 1
+        for i in data:
+            Todo.objects.filter(id=i.id).update(place=place)
+            place += 1
         data = Todo.objects.filter()
         context = {'all_data':data}
         return render(request, 'main.html', context)
