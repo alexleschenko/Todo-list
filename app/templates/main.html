@@ -7,7 +7,11 @@
     {% for i in all_data %}
         <tr>
         <td>
-            {{ i.done }}
+            {% if i.done == True %}
+            &#10003;
+            {% else %}
+            <a href="{% url 'main' %}?action=done">&#10005;</a>
+            {% endif %}
         </td>
         <td>
             {{ i.task }}
