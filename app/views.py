@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-from models import *
+
 from forms import *
-from django.http import HttpResponse
+from models import *
+
+
 # Create your views here.
 def main(request):
     if request.GET.items():
@@ -15,7 +17,7 @@ def main(request):
             if take_up.place == 1:
                 return redirect('main')
             else:
-                place = int(take_up.place)-1
+                place = int(take_up.place) - 1
                 take_down = Todo.objects.filter(place=place).get()
                 take_up_id = take_up.id
                 take_down_id = take_down.id
@@ -40,6 +42,10 @@ def main(request):
         elif action == 'done':
             Todo.objects.filter(id=id).update(done=True)
             return redirect('main')
+        elif action == 'undone':
+            Todo.objects.filter(id=id).update(done=False)
+            return redirect('main')
+
 
     else:
         data = Todo.objects.filter()
@@ -48,8 +54,9 @@ def main(request):
             Todo.objects.filter(id=i.id).update(place=place)
             place += 1
         data = Todo.objects.filter()
-        context = {'all_data':data}
+        context = {'all_data': data}
         return render(request, 'main.html', context)
+
 
 def add(request):
     if request.method == 'POST':
@@ -58,11 +65,12 @@ def add(request):
             data = form.cleaned_data
             Todo.objects.create(task=data['task'], done=data['done'])
             return redirect(main)
-        context = {'my_form':form}
+        context = {'my_form': form}
         return render(request, 'add.html', context)
     else:
-        context = {'my_form':TaskForm()}
+        context = {'my_form': TaskForm()}
         return render(request, 'add.html', context)
+
 
 def update(request):
     if request.method == 'POST':
@@ -79,6 +87,7 @@ def update(request):
         return render(request, 'update.html', context)
     else:
         id = request.GET.get('id')
+        predata = Todo.objects.filter(id=id).get()
         request.session['data'] = id
-        context = {'my_form': TaskForm()}
+        context = {'my_form': TaskForm(initial={'task':predata.task})}
         return render(request, 'update.html', context)

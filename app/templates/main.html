@@ -1,30 +1,32 @@
 <table border="1">
     <tr bgcolor="#808080">
-        <td>Status</td>
-        <td>Task</td>
-        <td>Actions</td>
+        <td>Статус</td>
+        <td>Задача</td>
+        <td>Действия</td>
     </tr>
     {% for i in all_data %}
         <tr>
-        <td>
-            {% if i.done == True %}
-            &#10003;
-            {% else %}
-            <a href="{% url 'main' %}?action=done&id={{ i.id }}">&#10005;</a>
-            {% endif %}
-        </td>
-        <td>
-            {{ i.task }}
-        </td>
-        <td>
-            <a href="{% url 'main' %}?action=upp&id={{ i.id }}">Move up</a>
-            <a href="{% url 'main' %}?action=down&id={{ i.id }}">Move down</a>
-            <a href="{% url 'update' %}?id={{ i.id }}">Update</a>
-            <a href="{% url 'main' %}?action=dell&id={{ i.id }}">Delete</a>
-        </td>
+            <td>
+                {% if i.done == True %}
+                    <a href="{% url 'main' %}?action=undone&id={{ i.id }}" title="Не выполнено"
+                       style="text-decoration: none">&#10003;</a>
+                {% else %}
+                    <a href="{% url 'main' %}?action=done&id={{ i.id }}" title="Выполнить"
+                       style="text-decoration: none">&#10005;</a>
+                {% endif %}
+            </td>
+            <td>
+                {{ i.task }}
+            </td>
+            <td>
+                <a href="{% url 'main' %}?action=upp&id={{ i.id }}" style="text-decoration: none">Вверх по списку</a>,
+                <a href="{% url 'main' %}?action=down&id={{ i.id }}" style="text-decoration: none">Вниз по списку</a>,
+                <a href="{% url 'update' %}?id={{ i.id }}" style="text-decoration: none">Обновить</a>,
+                <a href="{% url 'main' %}?action=dell&id={{ i.id }}" style="text-decoration: none">Удалить</a>
+            </td>
         </tr>
     {% endfor %}
 </table>
 
 <br>
-<a href="{% url 'add' %}">New task!</a>
+<a href="{% url 'add' %}">Новая задача!!</a>
