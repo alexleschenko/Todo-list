@@ -1,0 +1,7 @@
+<h4>Обновить задачу</h4>
+
+<form action="{% url 'update' %}" method="POST">
+    {{ my_form.as_p }}
+    {% csrf_token %}
+    <input type="submit" value="Add">
+</form>
