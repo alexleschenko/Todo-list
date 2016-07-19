@@ -9,10 +9,10 @@ def main(request):
     if request.GET.items():
         action = request.GET.get('action')
         id = request.GET.get('id')
-        if action == 'dell':
+        if action == 'dell': # удаление
             Todo.objects.filter(id=id).delete()
             return redirect('main')
-        elif action == 'upp':
+        elif action == 'upp': #поднять вверх
             take_up = Todo.objects.filter(id=id).get()
             if take_up.place == 1:
                 return redirect('main')
@@ -25,7 +25,7 @@ def main(request):
                 Todo.objects.filter(id=take_up_id).update(id=take_down_id)
                 Todo.objects.create(id=take_up_id, task=take_down.task, done=take_down.done)
                 return redirect('main')
-        elif action == 'down':
+        elif action == 'down': #опустить запись
             take_up = Todo.objects.filter(id=id).get()
             count_db = Todo.objects.filter().count()
             if take_up.place == count_db:
@@ -39,7 +39,7 @@ def main(request):
                 Todo.objects.filter(id=take_up_id).update(id=take_down_id)
                 Todo.objects.create(id=take_up_id, task=take_down.task, done=take_down.done)
                 return redirect('main')
-        elif action == 'done':
+        elif action == 'done': #маркер выполнения и невыполнения
             Todo.objects.filter(id=id).update(done=True)
             return redirect('main')
         elif action == 'undone':
@@ -58,7 +58,7 @@ def main(request):
         return render(request, 'main.html', context)
 
 
-def add(request):
+def add(request): # добавление
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
@@ -72,7 +72,7 @@ def add(request):
         return render(request, 'add.html', context)
 
 
-def update(request):
+def update(request): #обновление
     if request.method == 'POST':
         form = TaskForm(request.POST)
 
